@@ -92,7 +92,7 @@ function App() {
 					: activeTab === 'Long Break'
 					? 'bg-gradient-to-l from-green-500 to-yellow-400'
 					: 'bg-gradient-to-l from-red-400 to-orange-300'
-			}  ease-in-out transition `}>
+			}  ease-in-out transition duration-300 `}>
 			<SettingsModal
 				settingsIsOpen={settingsIsOpen}
 				tabs={tabs}
@@ -106,7 +106,7 @@ function App() {
 					<div className=''>
 						<button
 							onClick={() => setSettingsIsOpen(!settingsIsOpen)}
-							className='bg-white px-4 py-2 bg-opacity-20 rounded-md text-sm text-white hover:bg-gray-200 hover:bg-opacity-40'>
+							className='bg-white px-4 py-2 bg-opacity-20 rounded-md text-sm text-white hover:bg-gray-200 hover:bg-opacity-40 duration-300'>
 							Settings
 						</button>
 					</div>
@@ -124,11 +124,15 @@ function App() {
 						))}
 					</div>
 					<div className='text-white font-bold text-8xl p-4'>{timerRender}</div>
-					<button
-						className='bg-white px-6 py-2 bg-opacity-20 rounded-md text-lg text-white'
+					<motion.button
+						initial={false}
+						whileTap={{
+							scale: 0.8,
+						}}
+						className='bg-white px-8 py-2 bg-opacity-30 rounded-md text-lg text-white hover:bg-opacity-40 hover:bg-gray-200 duration-100  tracking-wide'
 						onClick={() => setStart(!start)}>
 						{start ? 'Stop' : 'Start'}
-					</button>
+					</motion.button>
 				</div>
 			</div>
 		</div>
