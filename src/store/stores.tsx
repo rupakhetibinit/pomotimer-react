@@ -4,4 +4,3 @@ type Tab = {
 	timer: number;
 };
 export const isSettingsOpenAtom = atom(false);
-export const activeTabAtom = atom('Pomodoro');

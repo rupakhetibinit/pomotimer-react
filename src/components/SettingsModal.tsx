@@ -1,21 +1,23 @@
 import { motion } from 'framer-motion';
+import { useAtom } from 'jotai';
 import { MutableRefObject, useRef } from 'react';
+import { activeTabAtom, tabsAtom, timerAtom } from '../App';
+import { isSettingsOpenAtom } from '../store/stores';
 
 type SettingsModalProps = {
-	settingsIsOpen: boolean;
-	tabs: { name?: string | undefined; timer?: number | undefined }[];
-	setTabs: any;
-	setTimer: any;
-	activeTab: string;
+	// settingsIsOpen: boolean;
+	// tabs: { name?: string | undefined; timer?: number | undefined }[];
+	// setTabs: any;
+	// setTimer: any;
+	// activeTab: string;
 };
 
-const SettingsModal = ({
-	settingsIsOpen,
-	setTabs,
-	tabs,
-	setTimer,
-	activeTab,
-}: SettingsModalProps) => {
+const SettingsModal = ({}: SettingsModalProps) => {
+	const [tabs, setTabs] = useAtom(tabsAtom);
+	const [settingsIsOpen, _] = useAtom(isSettingsOpenAtom);
+	const [timer, setTimer] = useAtom(timerAtom);
+	const [activeTab, setActiveTab] = useAtom(activeTabAtom);
+
 	const variants = {
 		open: {
 			opacity: 1,
@@ -26,21 +28,22 @@ const SettingsModal = ({
 			y: '-100vh',
 		},
 	};
-	const handleInputChange = (tab: { name: string; timer: number }, e: any) => {
+	const handleInputChange = (tab: any, e: any) => {
 		const initialTabs = [...tabs];
 		const findTabIndex = initialTabs.findIndex((t: any) => t.name === tab.name);
 		const findTab = initialTabs.find((t: any) => t.name === tab.name);
 		console.log(findTab);
-		if (findTab !== null || undefined) {
-			initialTabs.splice(findTabIndex, 1, {
-				name: findTab?.name,
-				timer: e.target.value,
-			});
-			const finalTimer = parseInt(e.target.value) * 60;
-			setTabs([...initialTabs]);
-			if (activeTab === findTab?.name) {
-				setTimer(finalTimer);
-			}
+		if (findTab == null || undefined) {
+			return;
+		}
+		initialTabs.splice(findTabIndex, 1, {
+			name: findTab.name,
+			timer: e.target.value,
+		});
+		const finalTimer = parseInt(e.target.value) * 60;
+		setTabs([...initialTabs]);
+		if (activeTab === findTab?.name) {
+			setTimer(finalTimer);
 		}
 	};
 	return (
