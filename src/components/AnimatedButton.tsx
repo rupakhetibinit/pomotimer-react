@@ -1,17 +1,14 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-
+import { useTabStore } from '../store/zustandStore';
 type AnimatedButtonProps = {
 	activeTab: string;
 	tab: string;
 	handleClick: (tab: string) => void;
 };
 
-const AnimatedButton = ({
-	activeTab,
-	tab,
-	handleClick,
-}: AnimatedButtonProps) => {
+const AnimatedButton = ({ tab, handleClick }: AnimatedButtonProps) => {
+	const activeTab = useTabStore((state) => state.activeTab);
 	const buttonVariants = {
 		selected: {
 			scale: 1.105,

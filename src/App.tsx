@@ -4,6 +4,7 @@ import { useAtom } from 'jotai';
 import { isSettingsOpenAtom, activeTabAtom } from './store/stores';
 import { motion } from 'framer-motion';
 import AnimatedButton from './components/AnimatedButton';
+import { useTabStore, useTimerStore } from './store/zustandStore';
 const toMinutesAndSeconds = (timer: number) => {
 	const minutes = Math.floor(timer / 60);
 	const seconds = timer % 60;
@@ -13,7 +14,15 @@ const toMinutesAndSeconds = (timer: number) => {
 };
 
 function App() {
-	const [settingsIsOpen, setSettingsIsOpen] = useAtom(isSettingsOpenAtom);
+	// const [settingsIsOpen, setSettingsIsOpen] = useAtom(isSettingsOpenAtom);
+	const settingsIsOpen = useTabStore((state) => state.isSettingsOpen);
+	const setSettingsIsOpen = useTabStore((state) => state.setIsSettingsOpen);
+	const setActiveTab = useTabStore((state) => state.setActiveTab);
+	const activeTab = useTabStore((state) => state.activeTab);
+	const timer = useTimerStore((state) => state.timer);
+	const setTimer = useTimerStore((state) => state.setTimer);
+	const start = useTimerStore((state) => state.start);
+	const setStart = useTimerStore((state) => state.setStart);
 	const [tabs, setTabs] = useState([
 		{
 			name: 'Pomodoro',
@@ -28,8 +37,9 @@ function App() {
 			timer: 15,
 		},
 	]);
-	const [timer, setTimer] = useState(25 * 60);
-	const [start, setStart] = useState(false);
+	// const [timer, setTimer] = useState(25 * 60);
+
+	// const [start, setStart] = useState(false);
 	// const animationProps = useSpring({
 	// 	from: {
 	// 		y: -100,
@@ -53,7 +63,7 @@ function App() {
 				return;
 			}
 			tick.current = window.setInterval(() => {
-				setTimer((timer) => timer - 1);
+				setTimer(timer - 1);
 			}, 1000);
 		} else {
 			tick.current = undefined;
@@ -66,7 +76,6 @@ function App() {
 	}, [start, timer]);
 
 	const timerRender = toMinutesAndSeconds(timer);
-	const [activeTab, setActiveTab] = useAtom(activeTabAtom);
 
 	function handleClick(tab: any) {
 		if (tick.current) {
@@ -105,7 +114,7 @@ function App() {
 					<div className='text-2xl font-medium text-white'>PomoTimer</div>
 					<div className=''>
 						<button
-							onClick={() => setSettingsIsOpen(!settingsIsOpen)}
+							onClick={setSettingsIsOpen}
 							className='bg-white px-4 py-2 bg-opacity-20 rounded-md text-sm text-white hover:bg-gray-200 hover:bg-opacity-40 duration-300'>
 							Settings
 						</button>

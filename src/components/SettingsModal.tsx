@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { MutableRefObject, useRef } from 'react';
+import { useTabStore, useTimerStore } from '../store/zustandStore';
 
 type SettingsModalProps = {
 	settingsIsOpen: boolean;
@@ -9,13 +10,13 @@ type SettingsModalProps = {
 	activeTab: string;
 };
 
-const SettingsModal = ({
-	settingsIsOpen,
-	setTabs,
-	tabs,
-	setTimer,
-	activeTab,
-}: SettingsModalProps) => {
+const SettingsModal = ({ setTabs, tabs }: SettingsModalProps) => {
+	const settingsIsOpen = useTabStore((state) => state.isSettingsOpen);
+	const setSettingsIsOpen = useTabStore((state) => state.setIsSettingsOpen);
+	const setActiveTab = useTabStore((state) => state.setActiveTab);
+	const activeTab = useTabStore((state) => state.activeTab);
+	const timer = useTimerStore((state) => state.timer);
+	const setTimer = useTimerStore((state) => state.setTimer);
 	const variants = {
 		open: {
 			opacity: 1,
