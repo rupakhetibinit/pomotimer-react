@@ -14,7 +14,20 @@ const toMinutesAndSeconds = (timer: number) => {
 
 function App() {
 	const [settingsIsOpen, setSettingsIsOpen] = useAtom(isSettingsOpenAtom);
-
+	const [tabs, setTabs] = useState([
+		{
+			name: 'Pomodoro',
+			timer: 25,
+		},
+		{
+			name: 'Short Break',
+			timer: 5,
+		},
+		{
+			name: 'Long Break',
+			timer: 15,
+		},
+	]);
 	const [timer, setTimer] = useState(25 * 60);
 	const [start, setStart] = useState(false);
 	// const animationProps = useSpring({
@@ -54,20 +67,22 @@ function App() {
 
 	const timerRender = toMinutesAndSeconds(timer);
 	const [activeTab, setActiveTab] = useAtom(activeTabAtom);
-	const tabs = ['Pomodoro', 'Short Break', 'Long Break'];
-	function handleClick(tab: string) {
+
+	function handleClick(tab: any) {
 		if (tick.current) {
 			alert('Timer still running');
 			return;
 		}
-		if (tab === 'Pomodoro') {
-			setTimer(25 * 60);
-		} else if (tab === 'Short Break') {
-			setTimer(5 * 60);
-		} else {
-			setTimer(15 * 60);
+		const findTab: { name: string; timer: number } | undefined = tabs.find(
+			(t: { name: any }) => t.name === tab.name
+		);
+		if (!findTab) {
+			return null;
 		}
-		setActiveTab(tab);
+		const newTimer = findTab.timer * 60;
+		setTimer(newTimer);
+
+		setActiveTab(tab.name);
 	}
 	return (
 		<div
@@ -78,7 +93,13 @@ function App() {
 					? 'bg-gradient-to-l from-green-500 to-yellow-400'
 					: 'bg-gradient-to-l from-red-400 to-orange-300'
 			}  ease-in-out transition `}>
-			<SettingsModal settingsIsOpen={settingsIsOpen} />
+			<SettingsModal
+				settingsIsOpen={settingsIsOpen}
+				tabs={tabs}
+				setTabs={setTabs}
+				setTimer={setTimer}
+				activeTab={activeTab}
+			/>
 			<div className='flex flex-col'>
 				<nav className='flex justify-between mb-2 items-center'>
 					<div className='text-2xl font-medium text-white'>PomoTimer</div>
@@ -95,10 +116,10 @@ function App() {
 					<div className='flex flex-row'>
 						{tabs.map((tab) => (
 							<AnimatedButton
-								key={tab}
+								key={tab.name}
 								activeTab={activeTab}
 								handleClick={() => handleClick(tab)}
-								tab={tab}
+								tab={tab.name}
 							/>
 						))}
 					</div>
