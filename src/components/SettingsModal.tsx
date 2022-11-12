@@ -24,8 +24,8 @@ const SettingsModal = ({ settingsIsOpen }: SettingsModalProps) => {
 			<div
 				onClick={() => console.log('clicked on container')}
 				className='flex flex-col items-center'>
-				<p>COpe</p>
-				<p>nope</p>
+				<p>Test1</p>
+				<p>Test2</p>
 			</div>
 		</motion.div>
 	);
