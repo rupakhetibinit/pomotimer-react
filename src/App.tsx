@@ -102,7 +102,7 @@ function App() {
 			/>
 			<div className='flex flex-col'>
 				<nav className='flex justify-between mb-2 items-center'>
-					<div className='text-2xl font-medium text-white'>PomoTimer</div>
+					<p className='text-2xl font-medium text-white'>PomoTimer</p>
 					<div className=''>
 						<button
 							onClick={() => setSettingsIsOpen(!settingsIsOpen)}
